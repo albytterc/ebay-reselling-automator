@@ -1,4 +1,4 @@
-![Pycodestyle](https://github.com/albytterc/ebay-reselling-automator/actions/workflows/main.yaml/badge.svg)
+![Pycodestyle](https://github.com/albytterc/ebay-reselling-automator/actions/workflows/main.yml/badge.svg)
 # ebay-reselling-automator
 
 ## Setup
