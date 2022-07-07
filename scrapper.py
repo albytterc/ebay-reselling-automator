@@ -3,9 +3,10 @@ import requests
 import json
 import re
 
-
-URL = "https://www.amazon.com/Moto-Power-Unlocked-Smartphone-T-Mobile/dp/B08L5MN4LV/ref=sr_1_14?crid=1VCJ3UG6VQ86N&keywords=motorola+g+power&qid=1657210497&sprefix=motorola+g+power%2Caps%2C222&sr=8-14#renewedProgramDescriptionBtfSection"
-# URL = input("Enter product URL: ")
+URL = ""
+def set_url():
+    global URL
+    URL = input("Enter a valid URL: ")
 
 
 HEADERS = ({'User-Agent':
@@ -13,6 +14,7 @@ HEADERS = ({'User-Agent':
             'Accept-Language': 'en-US, en;q=0.5'})
 
 # Send requests
+set_url()
 webpage = requests.get(URL, headers=HEADERS)
 soup = BeautifulSoup(webpage.content, "html.parser")
 
@@ -28,8 +30,8 @@ if webpage.ok:
 
     def get_price():
         price = soup.find("span", attrs={"class": 'a-offscreen'})
-        price_value = price.string
-        return(price_value)
+        price_value = str(price.string)
+        return(price_value[1:])
 
     # Extract item description
 
@@ -50,7 +52,11 @@ if webpage.ok:
         describtion = [i for i in describtion if i]
         describtion.pop(0)
 
-        return describtion
+        result_str = "<ul>"
+        for line in describtion:
+            result_str += f"<li>{line}</li>"
+
+        return result_str + '</ul>'
 
     # Extract pictures
     def get_pictures():
@@ -93,7 +99,7 @@ if webpage.ok:
 
         # create a dictionary with the key and val
         for i in range(len(key)):
-            details[key[i]] = val[i]
+            details[key[i]] = [val[i]]
 
         return details
 else:
