@@ -69,7 +69,3 @@ if webpage.ok:
  
 else:
     print("Error with URL")
-
-print(get_pictures())
-
-# print(desc)
