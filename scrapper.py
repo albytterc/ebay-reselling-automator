@@ -4,8 +4,6 @@ import json
 import re
 
 URL = ""
-
-
 def set_url():
     global URL
     URL = input("Enter a valid Amazon product URL: ")
