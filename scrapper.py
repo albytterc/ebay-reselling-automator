@@ -103,5 +103,11 @@ if webpage.ok:
             details[key[i]] = [val[i]]
 
         return details
+
+
+    def get_sku():
+        unfiltered_sku = soup.find_all("td", {"class": "a-size-base prodDetAttrValue"})
+        return str(unfiltered_sku[2].string).strip()
+
 else:
     print("Error with URL")

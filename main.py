@@ -1,5 +1,6 @@
 import ebay_api
 import scrapper
+import sql
 from ebay_rest import DateTime, Error, Reference
 import ebay_rest.a_p_i as ebay
 
@@ -59,7 +60,7 @@ def main():
 
         item_data = set_item_data()
 
-        sku = "MO20USBLUN"
+        sku = scrapper.get_sku()
 
         offer_data = {
             "sku": sku,
@@ -104,7 +105,9 @@ def main():
         merchant_loc_key = 'NYCLOC6TH'
 
         ebay_api.create_listing(api, sku, item_data, offer_data, merchant_location_data, merchant_loc_key)
-
+        sql.prompt_user()
+        # Uncomment line below to clear all inventory items, locations, listings, and clear the database
+        # ebay_api.clear_entities(api)
 
 if __name__ == '__main__':
     main()

@@ -1,6 +1,9 @@
 import requests
 import json
 import sys
+
+import scrapper
+import sql
 from ebay_rest import DateTime, Error, Reference
 
 
@@ -195,13 +198,15 @@ def clear_entities(api):
         for sku in item_skus:
             for offer in api.sell_inventory_get_offers(sku=sku):
                 if 'record' in offer:
-                    offer_id = offer['record'][offer_id]
+                    offer_id = offer['record']['offer_id']
                     offer_ids.append(offer_id)
 
         for offer_id in offer_ids:
             api.sell_inventory_delete_offer(offer_id)
     except Error as error:
         print(f'Error {error.number} is {error.reason}  {error.detail}.\n')
+
+    sql.clear_database()
 
 
 def create_listing(api, sku, item_data, offer_data, location_data, location_key):
@@ -216,9 +221,11 @@ def create_listing(api, sku, item_data, offer_data, location_data, location_key)
         print(f'Error {error.number} is {error.reason} {error.detail}.\n')
     else:
         listing_id = publish_resp['listing_id']
+        sql.store_data(sku, offer_resp, listing_id, scrapper.URL)
         print(publish_resp)
         print("Here's the link to your eBay listing:")
         print(f"https://www.sandbox.ebay.com/itm/{listing_id}")
+        return listing_id
 
 
 # def driver():
