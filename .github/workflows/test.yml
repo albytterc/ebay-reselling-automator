@@ -18,3 +18,15 @@ jobs:
       - name: Test with unittest
         run: |
           python3 -m unittest TestEbay_api
+        
+      - name: Check code coverage                       
+        run: |
+          python3 -m coverage run -m unittest TestEbay_api
+          python3 -m coverage report
+          python3 -m coverage html
+          
+      - name: Archive code coverage HTML report
+        uses: actions/upload-artifact@v2
+        with:
+           name: code-coverage-report
+           path: htmlcov      
