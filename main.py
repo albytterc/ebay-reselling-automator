@@ -49,7 +49,6 @@ def set_item_data():
     return item_data
 
 
-
 def main():
     # scrapper.set_url()
     try:
@@ -58,10 +57,9 @@ def main():
         print(f'Error {error.number} is {error.reason}  {error.detail}.\n')
     else:
 
-
         item_data = set_item_data()
 
-        sku = "MO20USBLVE"
+        sku = "MO20USBLUN"
 
         offer_data = {
             "sku": sku,

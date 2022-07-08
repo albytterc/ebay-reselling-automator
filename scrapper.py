@@ -4,14 +4,20 @@ import json
 import re
 
 URL = ""
+
+
 def set_url():
     global URL
-    URL = input("Enter a valid URL: ")
+    URL = input("Enter a valid Amazon product URL: ")
 
 
-HEADERS = ({'User-Agent':
-           'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36',
-            'Accept-Language': 'en-US, en;q=0.5'})
+HEADERS = ({
+    'User-Agent':
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+        ' AppleWebKit/537.36 (KHTML, like Gecko)'
+        ' Chrome/103.0.0.0 Safari/537.36',
+    'Accept-Language': 'en-US, en;q=0.5'
+})
 
 # Send requests
 set_url()
@@ -24,36 +30,34 @@ if webpage.ok:
         title = soup.find("span", attrs={"id": 'productTitle'})
         title_value = title.string
         title_string = title_value.strip().replace(',', '')
-        return(title_string)
+        return title_string
 
     # Extract price
-
     def get_price():
         price = soup.find("span", attrs={"class": 'a-offscreen'})
         price_value = str(price.string)
-        return(price_value[1:])
+        return price_value[1:]
 
     # Extract item description
-
     def get_description():
         desc = soup.find_all(
             'ul', {"class": "a-unordered-list a-vertical a-spacing-mini"})
-        describtion = []
+        description = []
         for i in desc:
             if i.find_all("span", {"class": "a-list-item"}):
                 for j in i:
-                    describtion.append(j.string)
+                    description.append(j.string)
 
-        for i in describtion:
+        for i in description:
             if i == '' or i == '\n' or i == ' ':
-                describtion.remove(i)
+                description.remove(i)
 
         # Get rid of None and irrelevant details
-        describtion = [i for i in describtion if i]
-        describtion.pop(0)
+        description = [i for i in description if i]
+        description.pop(0)
 
         result_str = "<ul>"
-        for line in describtion:
+        for line in description:
             result_str += f"<li>{line}</li>"
 
         return result_str + '</ul>'
@@ -69,7 +73,6 @@ if webpage.ok:
         return pics
 
     # Extract Details
-
     def get_details():
         details = {}
 

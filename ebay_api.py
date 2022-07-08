@@ -2,9 +2,6 @@ import requests
 import json
 import sys
 from ebay_rest import DateTime, Error, Reference
-import ebay_rest.a_p_i as ebay_api
-
-
 
 
 def get_merchant_key(api):
@@ -59,7 +56,6 @@ def create_inventory_item(api, item_data, sku):
     #         }
     #     }
     # }
-
 
     api.sell_inventory_create_or_replace_inventory_item(body=item_data, content_language="en-US",
                                                         sku=sku)
@@ -159,7 +155,7 @@ def create_offer(api, policy_data, offer_data):
 
 
 # delete all inventory items and locations, also any offers
-def clear_entity(api):
+def clear_entities(api):
     # accessors = []
     # entity_list = None
     # if entity == 'item':
@@ -194,15 +190,18 @@ def clear_entity(api):
         api.sell_inventory_delete_inventory_location(key)
 
     # to delete offer, use offer_id
-    '''
+    offer_ids = []
     try:
         for sku in item_skus:
             for offer in api.sell_inventory_get_offers(sku=sku):
                 if 'record' in offer:
-                    print(offer)
+                    offer_id = offer['record'][offer_id]
+                    offer_ids.append(offer_id)
+
+        for offer_id in offer_ids:
+            api.sell_inventory_delete_offer(offer_id)
     except Error as error:
         print(f'Error {error.number} is {error.reason}  {error.detail}.\n')
-    '''
 
 
 def create_listing(api, sku, item_data, offer_data, location_data, location_key):
