@@ -3,4 +3,4 @@
 # ebay-reselling-automator
 
 ## Setup
-Please refer to albytterc/ebay_rest_fix for library setup instructions
+Please refer to matecsaj/ebay_rest for library setup instructions
