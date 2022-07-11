@@ -1,5 +1,4 @@
 import mysql.connector
-import scrapper
 
 # Connect to DB
 mydb = mysql.connector.connect(
@@ -9,12 +8,12 @@ mydb = mysql.connector.connect(
     database="buglehsljj3yjtsm5zbn"
 )
 
-
 mycursor = mydb.cursor()
 
 # Store SKU, Offer ID, Listing ID, URL 
 # mycursor.execute("DROP TABLE IF EXISTS listing")
-mycursor.execute("CREATE TABLE IF NOT EXISTS listing (id MEDIUMINT NOT NULL AUTO_INCREMENT, sku VARCHAR(255), offerId VARCHAR(255), listingId VARCHAR(255), url VARCHAR(255), status VARCHAR(255) DEFAULT 'Not Sold' , primary key (id) )")
+mycursor.execute(
+    "CREATE TABLE IF NOT EXISTS listing (id MEDIUMINT NOT NULL AUTO_INCREMENT, sku VARCHAR(255), offerId VARCHAR(255), listingId VARCHAR(255), url VARCHAR(255), status VARCHAR(255) DEFAULT 'Not Sold' , primary key (id) )")
 
 
 def store_data(sku, offerId, listingId, url):
@@ -24,6 +23,7 @@ def store_data(sku, offerId, listingId, url):
     val = (sku, offerId, listingId, url)
     mycursor.execute(sql, val)
     mydb.commit()
+
 
 def clear_database():
     mycursor.execute("TRUNCATE TABLE listing;")
@@ -39,10 +39,11 @@ def see_listings():
 
 
 def update_status(url):
-    sql = "UPDATE listing SET status = 'Sold' WHERE url = " + "'"+ url + "' " + ""
+    sql = "UPDATE listing SET status = 'Sold' WHERE url = " + "'" + url + "' " + ""
     mycursor.execute(sql)
     mydb.commit()
     print(f"Status of {url[:80]}... updated")
+
 
 def prompt_user():
     show_listings = input("Do you want to see your listings? (y/n): ")
@@ -53,4 +54,3 @@ def prompt_user():
     if to_update == 'y':
         u = input("Enter the Amazon URL of a product you listed: ")
         update_status(u)
-

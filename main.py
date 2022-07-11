@@ -1,8 +1,9 @@
-import ebay_api
-import scrapper
-import sql
-from ebay_rest import DateTime, Error, Reference
 import ebay_rest.a_p_i as ebay
+from ebay_rest import Error
+
+import ebay_api
+import scraper
+import sql
 
 
 # TODOS:
@@ -42,16 +43,15 @@ def set_item_data():
 
     item_data['product'] = {}
     product_info = item_data['product']
-    product_info['title'] = scrapper.get_name()[:79]
-    product_info['aspects'] = scrapper.get_details()
-    product_info['imageURLs'] = scrapper.get_pictures()
-    product_info['imageURLs'][0] = 'https://m.media-amazon.com/images/I/61XOOWH7pCL._AC_SL1000_.jpg'
+    product_info['title'] = scraper.get_name()[:79]
+    product_info['aspects'] = scraper.get_details()
+    product_info['imageURLs'] = scraper.get_pictures()
 
     return item_data
 
 
 def main():
-    # scrapper.set_url()
+    # scraper.set_url()
     try:
         api = ebay.API(application='sandbox_1', user='sandbox_1', header='US')
     except Error as error:
@@ -60,7 +60,7 @@ def main():
 
         item_data = set_item_data()
 
-        sku = scrapper.get_sku()
+        sku = scraper.get_sku()
 
         offer_data = {
             "sku": sku,
@@ -68,7 +68,7 @@ def main():
             "format": "FIXED_PRICE",
             "availableQuantity": 1,
             "categoryId": "30120",
-            "listingDescription": scrapper.get_description(),
+            "listingDescription": scraper.get_description(),
             "listingPolicies": {
                 "fulfillmentPolicyId": "3*********0",
                 "paymentPolicyId": "3*********0",
@@ -77,7 +77,7 @@ def main():
             "pricingSummary": {
                 "price": {
                     "currency": "USD",
-                    "value": scrapper.get_price()
+                    "value": scraper.get_price()
                 }
             },
             "quantityLimitPerBuyer": 1,
@@ -108,6 +108,7 @@ def main():
         sql.prompt_user()
         # Uncomment line below to clear all inventory items, locations, listings, and clear the database
         # ebay_api.clear_entities(api)
+
 
 if __name__ == '__main__':
     main()

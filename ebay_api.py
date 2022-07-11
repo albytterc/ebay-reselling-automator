@@ -1,10 +1,7 @@
-import requests
-import json
-import sys
+from ebay_rest import Error
 
-import scrapper
+import scraper
 import sql
-from ebay_rest import DateTime, Error, Reference
 
 
 def get_merchant_key(api):
@@ -221,12 +218,11 @@ def create_listing(api, sku, item_data, offer_data, location_data, location_key)
         print(f'Error {error.number} is {error.reason} {error.detail}.\n')
     else:
         listing_id = publish_resp['listing_id']
-        sql.store_data(sku, offer_resp, listing_id, scrapper.URL)
-        print(publish_resp)
+        sql.store_data(sku, offer_resp, listing_id, scraper.URL)
+        # print(publish_resp)
         print("Here's the link to your eBay listing:")
         print(f"https://www.sandbox.ebay.com/itm/{listing_id}")
         return listing_id
-
 
 # def driver():
 #     try:
